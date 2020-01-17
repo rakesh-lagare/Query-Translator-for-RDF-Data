@@ -1,0 +1,19 @@
+PREFIX  lld: <http://linkeddata.com/ontology#>
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+
+SELECT (AVG(?windDirection) AS ?avgWindDirection)
+WHERE
+  { ?sensor   om-owl:processLocation  ?sensorLocation .
+    ?sensorLocation
+              wgs84_pos:alt         "4418"^^xsd:float ;
+              wgs84_pos:long        "-116.1231"^^xsd:float ;
+              wgs84_pos:lat         "37.1006"^^xsd:float .
+    ?o2M      om-owl:observedProperty  weather:_WindDirection.
+    ?sensor   om-owl:generatedObservation  ?o2M .
+    ?o2M      om-owl:result         ?1M .   
+    ?1M       om-owl:floatValue     ?windDirection .
+  }

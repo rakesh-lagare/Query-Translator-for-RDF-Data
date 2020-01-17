@@ -1,0 +1,22 @@
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  lld:  <http://linkeddata.com/ontology#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+SELECT  ?sensor ?observation1 ?observation2
+WHERE
+  { { ?observation1M
+                om-owl:procedure      ?sensor ;
+                a                     weather:WindDirectionObservation ;
+                om-owl:observedProperty  weather:_WindDirection ;
+                lld:hasObservation    ?observation1
+    }
+    OPTIONAL
+      { { ?observation2M
+                    om-owl:procedure      ?sensor ;
+                    om-owl:observedProperty  weather:WindSpeed ;
+                    lld:hasObservation    ?observation2 ;
+                    a                     weather:WindSpeedObservation
+        }
+      }
+  }

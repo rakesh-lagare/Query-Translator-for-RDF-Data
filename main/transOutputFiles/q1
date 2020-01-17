@@ -1,0 +1,17 @@
+PREFIX  lld: <http://linkeddata.com/ontology#>
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+SELECT DISTINCT  ?sensor ?value ?uom
+WHERE
+  { { ?observation  om-owl:result     ?result .
+      ?observationM
+                a                     weather:RainfallObservation ;
+                om-owl:procedure      ?sensor ;
+                lld:hasObservation      ?observation ;
+                om-owl:result         ?resultM
+    }
+    { ?resultM  om-owl:floatValue  ?value ;
+                om-owl:uom         ?uom
+    }
+  }

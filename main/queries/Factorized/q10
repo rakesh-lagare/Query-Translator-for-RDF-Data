@@ -1,0 +1,17 @@
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX  lld:  <http://linkeddata.com/ontology#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+SELECT DISTINCT  ?lat ?long ?alt
+WHERE
+  { ?0M       a                     weather:RainfallObservation .
+    ?sensor   om-owl:processLocation  ?sensorLocation .
+    ?sensorLocation
+              wgs84_pos:lat         ?lat .
+    ?sensor   om-owl:generatedObservation  ?0M .
+    ?0M       lld:hasObservation    ?b0 .
+    ?sensorLocation
+              wgs84_pos:alt         ?alt ;
+              wgs84_pos:long        ?long
+  }

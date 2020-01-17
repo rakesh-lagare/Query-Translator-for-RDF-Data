@@ -1,0 +1,12 @@
+PREFIX om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+PREFIX weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+ASK
+WHERE {
+  ?observation om-owl:procedure ?sensor ;
+               om-owl:observedProperty weather:WindSpeed ;
+               om-owl:result [ om-owl:floatValue ?value ] .
+}              
+GROUP BY ?sensor
+HAVING ( AVG(?value) >= "74"^^xsd:float ) 

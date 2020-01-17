@@ -1,0 +1,17 @@
+PREFIX  lld: <http://linkeddata.com/ontology#>
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+ASK
+WHERE
+  { ?observationM
+              om-owl:result         ?0M .
+    ?0M       om-owl:floatValue     ?value .
+    ?observationM
+              om-owl:procedure      ?sensor ;
+              lld:hasObservation      ?observation ;
+              om-owl:observedProperty  weather:WindSpeed
+  }
+GROUP BY ?sensor
+HAVING ( AVG(?value) >= "74"^^xsd:float )

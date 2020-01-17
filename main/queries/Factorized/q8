@@ -1,0 +1,21 @@
+PREFIX  lld: <http://linkeddata.com/ontology#>
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+SELECT  (MIN(?temperature) AS ?minTemperature) (MAX(?temperature) AS ?maxTemperature)
+WHERE
+  { ?sensor   om-owl:processLocation  ?sensorLocation .
+    ?observationM
+              om-owl:result         ?0M .
+    ?sensorLocation
+                 wgs84:alt   "4418"^^xsd:float ;
+        wgs84:lat   "37.1006"^^xsd:float ;
+        wgs84:long  "-116.1231"^^xsd:float.
+    ?observationM
+              om-owl:observedProperty  weather:_AirTemperature .
+    ?sensor   om-owl:generatedObservation  ?observationM .
+    ?0M       om-owl:floatValue     ?temperature
+  }
+GROUP BY ?sensor

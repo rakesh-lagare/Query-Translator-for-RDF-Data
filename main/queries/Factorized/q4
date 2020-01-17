@@ -1,0 +1,25 @@
+PREFIX  weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  lld:  <http://linkeddata.com/ontology#>
+PREFIX  om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+
+SELECT  ?sensor (AVG(?windSpeed) AS ?averageWindSpeed) (AVG(?temperature) AS ?averageTemperature)
+WHERE
+  { ?temperatureObservationM
+              om-owl:procedure      ?sensor .
+    ?temperatureResultM
+              om-owl:floatValue     ?temperature .
+    ?temperatureObservationM
+              a                     weather:TemperatureObservation ;
+              om-owl:result         ?temperatureResultM .
+    ?temperatureResultM
+              om-owl:uom            ?uom
+    FILTER ( ( ?temperature > "32"^^xsd:float ) && regex(str(?uom), "fahrenheit", "i") )
+    ?0M       om-owl:floatValue     ?windSpeed .
+    ?windSpeedObservationM
+              
+              om-owl:procedure      ?sensor ;
+              a                     weather:WindSpeedObservation ;
+              om-owl:result         ?0M
+  }
+GROUP BY ?sensor

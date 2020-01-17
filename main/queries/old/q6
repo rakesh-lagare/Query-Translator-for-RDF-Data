@@ -1,0 +1,22 @@
+PREFIX om-owl: <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#>
+PREFIX weather: <http://knoesis.wright.edu/ssw/ont/weather.owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?sensor
+WHERE {
+  { ?observation om-owl:procedure ?sensor ;
+                 a weather:VisibilityObservation ;
+                 om-owl:result [om-owl:floatValue ?value ] . 
+    FILTER ( ?value < "10"^^xsd:float)  
+  }   
+  UNION
+  { ?observation om-owl:procedure ?sensor ;
+                 a weather:RainfallObservation ;
+                 om-owl:result [om-owl:floatValue ?value ] . 
+    FILTER ( ?value > "30"^^xsd:float)  
+  }   
+  UNION
+  { ?observation om-owl:procedure ?sensor ;
+                 a weather:SnowfallObservation .
+  }   
+}
